@@ -90,7 +90,7 @@ deploymentOutputs=$(az deployment group create \
   --parameters userObjectId=$userObjectId \
   --query 'properties.outputs' -o json)
 
-  echo $deploymentOutputs
+  #echo $deploymentOutputs
   if [[ $? == 0 ]]; then
     echo "[$template] Bicep template deployment succeeded"
   else
@@ -130,3 +130,5 @@ echo "OPENAI_API_TYPE=\"$OPENAI_API_TYPE\"" >> $environment_file
 echo "TEXT_DEPLOYMENT_ID=\"$TEXT_DEPLOYMENT_ID\"" >> $environment_file
 echo "OPENAI_API_VERSION=\"$OPENAI_API_VERSION\"" >> $environment_file
 echo "EMBEDDING_MODEL_NAME=\"$EMBEDDING_MODEL_NAME\"" >> $environment_file
+
+echo "Done!"

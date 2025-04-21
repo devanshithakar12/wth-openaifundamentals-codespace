@@ -96,12 +96,20 @@ resource model 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [
     }
   }
 ]
+resource cognitiveServicesUserRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: 'a97b65f3-24c7-4388-baec-2e87135dc908'
+  scope: subscription()
+}
 
 resource cognitiveServicesContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   name: '25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68'
   scope: subscription()
 }
 
+resource cognitiveServicesOpenAIUserRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+  scope: subscription()
+}
 // This role assignment grants the user the required permissions to eventually delete and purge the Azure AI Services account
 // https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control#cognitive-services-contributor
 resource cognitiveServicesContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(userObjectId)) {
@@ -109,6 +117,15 @@ resource cognitiveServicesContributorRoleAssignment 'Microsoft.Authorization/rol
   scope: aiServices
   properties: {
     roleDefinitionId: cognitiveServicesContributorRoleDefinition.id
+    principalType: 'User'
+    principalId: userObjectId
+  }
+}
+resource cognitiveServicesUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(userObjectId)) {
+  name: guid(aiServices.id, cognitiveServicesUserRoleDefinition.id, userObjectId)
+  scope: aiServices
+  properties: {
+    roleDefinitionId: cognitiveServicesUserRoleDefinition.id
     principalType: 'User'
     principalId: userObjectId
   }
@@ -131,6 +148,15 @@ resource cognitiveServicesOpenAIContributorRoleAssignment 'Microsoft.Authorizati
   }
 }
 
+resource cognitiveServicesOpenAIUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(userObjectId)) {
+  name: guid(aiServices.id, cognitiveServicesOpenAIUserRoleDefinition.id, userObjectId)
+  scope: aiServices
+  properties: {
+    roleDefinitionId: cognitiveServicesOpenAIUserRoleDefinition.id
+    principalType: 'User'
+    principalId: userObjectId
+  }
+}
 resource aiServicesDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: diagnosticSettingsName
   scope: aiServices
