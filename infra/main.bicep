@@ -114,8 +114,8 @@ param openAiDeployments array = [
   }
   {
     model: {
-      name: 'gpt-4o'
-      version: '2024-05-13'
+      name: 'gpt-4'
+      version: 'turbo-2024-04-09'
     }
     sku: {
       name: 'Standard'
@@ -397,6 +397,7 @@ output deploymentInfo object = {
   location: location
   aiServicesName: aiServices.outputs.name
   aiServicesEndpoint: aiServices.outputs.endpoint
+  aiServicesOpenAiEndpoint: aiServices.outputs.openAiEndpoint
   aiServicesKey: aiServices.outputs.key1
   hubName: hub.outputs.name
   projectName: project.outputs.name

@@ -18,11 +18,11 @@ param openAiDeployments = [
   }
   {
     model: {
-      name: 'gpt-4o'
-      version: '2024-05-13'
+      name: 'gpt-4'
+      version: 'turbo-2024-04-09'
     }
     sku: {
-      name: 'GlobalStandard'
+      name: 'Standard'
       capacity: 10
     }
   }

@@ -112,10 +112,11 @@ environment_sample_file="../.env.sample"
       error_exit "Example .env.sample file not found at $environment_sample_file."
   fi
 source $environment_sample_file
+
 # Extract values from JSON and write to .env file with double quotes around values
 echo "Populating .env file..."
-echo "AZURE_OPENAI_API_KEY=\"$(echo "$json" | jq -r '.deploymentInfo.value.aiServicesKey')\"" >> $environment_file
-echo "AZURE_OPENAI_ENDPOINT=\"$(echo "$json" | jq -r '.deploymentInfo.value.aiServicesEndpoint')\"" >> $environment_file
+echo "OPENAI_API_KEY=\"$(echo "$json" | jq -r '.deploymentInfo.value.aiServicesKey')\"" >> $environment_file
+echo "OPENAI_API_BASE=\"$(echo "$json" | jq -r '.deploymentInfo.value.aiServicesOpenAiEndpoint')\"" >> $environment_file
 echo "AZURE_COGNITIVE_SEARCH_KEY=\"$(echo "$json" | jq -r '.deploymentInfo.value.searchKey')\"" >> $environment_file
 echo "AZURE_COGNITIVE_SEARCH_ENDPOINT=\"$(echo "$json" | jq -r '.deploymentInfo.value.searchEndpoint')\"" >> $environment_file
 echo "DOCUMENT_INTELLIGENCE_ENDPOINT=\"$(echo "$json" | jq -r '.deploymentInfo.value.documentEndpoint')\"" >> $environment_file
