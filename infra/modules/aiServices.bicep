@@ -106,9 +106,25 @@ resource cognitiveServicesContributorRoleDefinition 'Microsoft.Authorization/rol
   scope: subscription()
 }
 
+resource azureAIDeveloperRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  name: '64702f94-c441-49e6-a78b-ef80e0188fee'
+  scope: subscription()
+}
+
 resource cognitiveServicesOpenAIUserRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   name: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
   scope: subscription()
+}
+
+// This resource defines the Azure AI Developer role, which provides permissions for managing Azure AI resources, including deployments and configurations
+resource aiDeveloperRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(userObjectId)) {
+  name: guid(aiServices.id, azureAIDeveloperRoleDefinition.id, userObjectId)
+  scope: aiServices
+  properties: {
+    roleDefinitionId: azureAIDeveloperRoleDefinition.id
+    principalType: 'User'
+    principalId: userObjectId
+  }
 }
 // This role assignment grants the user the required permissions to eventually delete and purge the Azure AI Services account
 // https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control#cognitive-services-contributor
